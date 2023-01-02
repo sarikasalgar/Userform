@@ -1,0 +1,33 @@
+.App {
+  
+}
+
+
+
+h1, p {
+  font-family: Lato;
+}
+
+.App {
+  text-align: center;
+  align-items: center;
+}
+
+
+
+form{
+  border:2px solid black;
+  margin: 30px;
+  width:500px;
+  background-color: skyblue;
+  padding-bottom: 30px;
+}
+
+label,input,button{
+  margin: 5px;
+}
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
