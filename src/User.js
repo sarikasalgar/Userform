@@ -1,10 +1,14 @@
 import './App.css'
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, lazy, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Editform from './Editform';
-function User() {
+//const Editform = lazy(() => import('./Editform'));
+
+export const Globaldata = createContext();
+
+function User({edit1},{arr}) {
     const schema = yup.object().shape({
     name:yup.string().min(2).required(),
     number:yup.number().required(),
@@ -33,18 +37,30 @@ function User() {
   const [edit,setEdit]=useState(false);
   const [array,setArray]=useState([]);
   
-  let arr=[];
+  
   const inputdata = {
     name:" ",
-      email: " ",
+      email:" ",
       number: " "
   };
+  //edit1=="true" && (inputdata.name=name1, inputdata.email=email1, inputdata.number= number1 reset(inputdata))
   const test=()=>{
     console.log(inputdata)
     reset(inputdata);
     
   }
-
+  useEffect(()=>{
+    console.log("hello",edit1,arr)
+    
+  if(edit1=="true"){
+    inputdata.name=arr[0].name
+    inputdata.email=arr[0].email
+    inputdata.number= arr[0].number
+    reset(inputdata)
+    setEdit(true)
+    console.log(edit1,"edit1")
+  } 
+})
   const { register, reset, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues:inputdata
@@ -64,23 +80,22 @@ function User() {
   }
   
   const handleDelete = (index) => {
-    array.splice(index, 1);
-    setArray([...array]);
+    
   };
-  const handleUpdate = (i) => {
-    arr=array.filter((element,index)=>element.name== i);
+  // const handleUpdate = (i) => {
+  //   arr=array.filter((element,index)=>element.name== i);
   
-    inputdata.name=arr[0].name
-    inputdata.email=arr[0].email
-    inputdata.number=arr[0].number
-    reset(inputdata);
-    setEdit(true);
-    console.log(edit,"edit",inputdata.name)
-  };
+  //   inputdata.name=arr[0].name
+  //   inputdata.email=arr[0].email
+  //   inputdata.number=arr[0].number
+  //   reset(inputdata);
+  //   setEdit(true);
+  //   console.log(edit,"edit",inputdata.name)
+  // };
   
   
   return (
-
+    <Globaldata.Provider value={{arraydata: array }}>
     <div className="App">
       
     <form onSubmit={handleSubmit(onSubmit, onError)}> 
@@ -151,32 +166,11 @@ function User() {
       <button type='submit' > Submit</button>
       )}
     </form>
-    <div>
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Contact no.</th>
-      </tr>
-
-      {array.map((item, index) => (
-        <tr key={index}>
-
-          <td>{item.name}</td>
-          <td>{item.email}</td>
-          <td>{item.number}</td>
-          <td>{item.user}</td>
-          <td><button onClick={() => handleUpdate(item.name)}>Update</button></td>
-          <td><button onClick={() => handleDelete(index)}>Delete</button></td>
-        </tr>
-      ))}
-    </table>
-  </div>
-  {edit &&(
-    <Editform />
-  )
-  }
+    
+        <Editform />
+  
   </div>   
+  </Globaldata.Provider>
   );
 }
 
