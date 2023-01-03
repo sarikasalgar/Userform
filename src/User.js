@@ -1,14 +1,15 @@
 import './App.css'
-import React, { createContext, useState, lazy, useEffect } from 'react';
+import React, { createContext, useState, lazy, useEffect,Suspense } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Editform from './Editform';
-//const Editform = lazy(() => import('./Editform'));
+//import Editform from './Editform';
+const Editform = lazy(() => import('./Editform'));
 
 export const Globaldata = createContext();
 
 function User({edit1},{arr}) {
+  
     const schema = yup.object().shape({
     name:yup.string().min(2).required(),
     number:yup.number().required(),
@@ -166,9 +167,9 @@ function User({edit1},{arr}) {
       <button type='submit' > Submit</button>
       )}
     </form>
-    
+    <Suspense fallback={<h1>Loading...</h1>}>
         <Editform />
-  
+        </Suspense>
   </div>   
   </Globaldata.Provider>
   );
