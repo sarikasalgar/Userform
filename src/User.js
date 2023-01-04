@@ -1,17 +1,18 @@
 import './App.css'
 import React, { createContext, useState, lazy, useEffect,Suspense } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useCallback, useMemo } from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
-import Showemployee from './showemployee';
+import Showemployee from './Showemployee';
 import Showstudent from './Showstudent';
 import * as yup from "yup";
 //import Editform from './Editform';
-const Editform = lazy(() => import('./Editform'));
+const Showdata = lazy(() => import('./Showdata'));
 
 export const Globaldata = createContext();
 
-function User({edit1},{arr}) {
-  
+function User() {
+  const methods = useForm();
     const schema = yup.object().shape({
     name:yup.string().min(2).required(),
     number:yup.number().required(),
@@ -40,7 +41,6 @@ function User({edit1},{arr}) {
   const [edit,setEdit]=useState(false);
   const [array,setArray]=useState([]);
   
-  
   const inputdata = {
     name:" ",
       email:" ",
@@ -51,18 +51,20 @@ function User({edit1},{arr}) {
     reset(inputdata);
     
   }
-  useEffect(()=>{
-    console.log("hello",edit1,arr)
+//   useEffect(()=>{
+//     let edit1=props.values[0];
+//     let arr=props.values[1]
+//     console.log("hello",edit1,arr)
     
-  if(edit1=="true"){
-    inputdata.name=arr[0].name
-    inputdata.email=arr[0].email
-    inputdata.number= arr[0].number
-    reset(inputdata)
-    setEdit(true)
-    console.log(edit1,"edit1")
-  } 
-})
+//   if(edit1=="true"){
+//     inputdata.name=arr[0].name
+//     inputdata.email=arr[0].email
+//     inputdata.number= arr[0].number
+//     reset(inputdata)
+//     setEdit(true)
+//     console.log(edit1,"edit1")
+//   } 
+// })
   const { register, reset, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues:inputdata
@@ -73,27 +75,34 @@ function User({edit1},{arr}) {
     setArray([...array,data])
     setShowemployee(false);
     setShowstudent(false);
-    console.log(data);      
+    console.log(array, "onsubmit");      
     
       
   };
- 
-  // const handleUpdate = (i) => {
-  //   arr=array.filter((element,index)=>element.name== i);
+  const onError=()=>{
+
+  }
+  let arr=[];
+  const handleUpdate = useCallback((i) => {
+    arr=array.filter((element,index)=>element.name== i);
   
-  //   inputdata.name=arr[0].name
-  //   inputdata.email=arr[0].email
-  //   inputdata.number=arr[0].number
-  //   reset(inputdata);
-  //   setEdit(true);
-  //   console.log(edit,"edit",inputdata.name)
-  // };
+    inputdata.name=arr.name
+    inputdata.email=arr.email
+    inputdata.number=arr.number
+    reset(inputdata);
+    setEdit(true);
+    console.log(array,"User array",arr,"filtered array")
+  },[]);
   
+  const contextValue = useMemo(() => ({
+    array,
+    handleUpdate
+  }), [array, handleUpdate]);
   
   return (
-    <Globaldata.Provider value={{arraydata: array }}>
+    <Globaldata.Provider value={contextValue}>
     <div className="App">
-      
+    <FormProvider {...methods} > 
     <form onSubmit={handleSubmit(onSubmit, onError)}> 
       
     
@@ -135,9 +144,10 @@ function User({edit1},{arr}) {
       <button type='submit' > Submit</button>
       )}
     </form>
+    </FormProvider>
     <Suspense fallback={<h1>Loading...</h1>}>
-        <Editform />
-        </Suspense>
+        <Showdata />
+    </Suspense>
   </div>   
   </Globaldata.Provider>
   );

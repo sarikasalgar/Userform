@@ -1,30 +1,20 @@
 import './App.css'
-import React, { useContext, useState,lazy } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import User from './User';
 import { Globaldata } from './User';
 
-function Editform() {
+function Showdata() {
     
-  const { arraydata } = useContext(Globaldata);
-
+  const { array,handleUpdate } = useContext(Globaldata);
+  useEffect(()=>{
+     console.log(array,"showdata array")
+  })
   
   const handleDelete =()=>{
     array.splice(index, 1);
     setArray([...array]);
   }
-  let edit1="true"
-  let arr=[];
-  const [edit,setEdit]=useState(false);
   
-  const handleUpdate = (i) => {
-      arr=arraydata.filter((element,index)=>element.name== i);
-      
-      setEdit(true);
-      //console.log(edit1,arr1.name,arr1[0].email,arr1.number);
-      console.log(input)
-    };
-    
-    
   return (
     <div>
     <table>
@@ -34,7 +24,7 @@ function Editform() {
         <th>Contact no.</th>
       </tr>
 
-      {arraydata.map((item, index) => (
+      {array.map((item, index) => (
         <tr key={index}>
 
           <td>{item.name}</td>
@@ -46,9 +36,9 @@ function Editform() {
         </tr>
       ))}
     </table>
-    {edit&& (<User edit1 arr/>)}
+    
   </div>
   );
 }
 
-export default Editform;
+export default Showdata;
