@@ -2,6 +2,8 @@ import './App.css'
 import React, { createContext, useState, lazy, useEffect,Suspense } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Showemployee from './showemployee';
+import Showstudent from './Showstudent';
 import * as yup from "yup";
 //import Editform from './Editform';
 const Editform = lazy(() => import('./Editform'));
@@ -44,8 +46,7 @@ function User({edit1},{arr}) {
       email:" ",
       number: " "
   };
-  //edit1=="true" && (inputdata.name=name1, inputdata.email=email1, inputdata.number= number1 reset(inputdata))
-  const test=()=>{
+   const test=()=>{
     console.log(inputdata)
     reset(inputdata);
     
@@ -76,13 +77,7 @@ function User({edit1},{arr}) {
     
       
   };
-  const onError = () =>{
-
-  }
-  
-  const handleDelete = (index) => {
-    
-  };
+ 
   // const handleUpdate = (i) => {
   //   arr=array.filter((element,index)=>element.name== i);
   
@@ -129,37 +124,10 @@ function User({edit1},{arr}) {
       
       
       {showemployee && ( 
-        <div>
-            <div>
-            <label>Current office name</label>
-            <input type="name" name="officename" {...register('officename')} />
-            <label>{errors.officename?.message}</label>
-          </div>
-          <div>
-            <label>Previous experience</label>
-            <input type="number" name="experience" {...register('experience')}/>
-            <label>{errors.experience?.message}</label>
-          </div>
-        </div>
+        <Showemployee />
       )}
       {showstudent && (
-        <div>
-            <div>
-            <label>College Name</label>
-            <input type="text" name="collageName" {...register('collageName')} />
-            <label>{errors.collageName?.message}</label>
-          </div>
-          <div>
-            <label>School name</label>
-            <input type="text" name="schoolName" {...register('schoolName')} />
-            <label>{errors.schoolName?.message}</label>
-          </div>
-          <div>
-            <label>Hobbies</label>
-            <input type="text" name="hobbies" {...register('hobbies')} />
-            <label>{errors.hobbies?.message}</label>
-          </div>
-        </div>
+        <Showstudent />
       )
       }
      <button onClick={() => test()} > Reset</button>
