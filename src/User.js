@@ -6,6 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Showemployee from './Showemployee';
 import Showstudent from './Showstudent';
 import * as yup from "yup";
+
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import {Select,MenuItem} from '@mui/material';
+
 //import Editform from './Editform';
 const Showdata = lazy(() => import('./Showdata'));
 
@@ -40,6 +46,7 @@ function User() {
   const [showstudent, setShowstudent] = useState(false);
   const [edit,setEdit]=useState(false);
   const [array,setArray]=useState([]);
+  const [val,setVal]=useState("Select User");
   
   const inputdata = {
     name:" ",
@@ -71,11 +78,11 @@ function User() {
   });
   
   const onSubmit = (data) => {
-    edit&& (array.splice(arr, 1, data))
-    setArray([...array,data])
+    edit? (array.splice(arr, 1, data)):setArray([...array,data])
+    
     setShowemployee(false);
     setShowstudent(false);
-    console.log(array, "onsubmit");      
+    console.log(arr, "onsubmit");      
     
       
   };
@@ -83,21 +90,30 @@ function User() {
 
   }
   let arr=[];
-  const handleUpdate = useCallback((i) => {
+  const handleUpdate = useCallback((i,array) => {
     arr=array.filter((element,index)=>element.name== i);
   
-    inputdata.name=arr.name
-    inputdata.email=arr.email
-    inputdata.number=arr.number
+    inputdata.name=arr[0].name
+    inputdata.email=arr[0].email
+    inputdata.number=arr[0].number
     reset(inputdata);
     setEdit(true);
     console.log(array,"User array",arr,"filtered array")
   },[]);
-  
+  const handleDelete =useCallback((index,array)=>{
+    console.log(array)
+    array.splice(index, 1);
+    setArray([...array]);
+  },[]);
   const contextValue = useMemo(() => ({
     array,
-    handleUpdate
-  }), [array, handleUpdate]);
+    handleUpdate,
+    handleDelete
+  }), [array, handleUpdate,handleDelete]);
+  const updateval=(e,val)=>{
+    console.warn(e.target.value);
+    setVal(e.target.value)
+  }
   
   return (
     <Globaldata.Provider value={contextValue}>
@@ -108,28 +124,32 @@ function User() {
     
       <h1>User Form</h1>
       <div>
-        <label>Name</label>
-        <input name="name" {...register('name')} type="text"  />
+        <InputLabel size='normal'>Name</InputLabel>
+        <Input name="name" {...register('name')} type="text"  />
         
       </div>
-      <label>{errors.name?.message}</label>
+      <InputLabel size='normal'>{errors.name?.message}</InputLabel>
       <div>
-        <label>Email</label>
-        <input type="email" name="email" {...register('email')}  />
+        <InputLabel size='normal'>Email</InputLabel>
+        <Input type="email" color='primary' name="email" {...register('email')}  />
       </div>
-      <label>{errors.email?.message}</label>
+      <InputLabel size='normal'>{errors.email?.message}</InputLabel>
       <div>
-        <label>Contact no</label>
-        <input type="number" name="number" {...register('number')}  />
+        <InputLabel size='normal'>Contact no</InputLabel>
+        <Input type="number" name="number" {...register('number')}  />
       </div>
-      <label>{errors.number?.message}</label>
-      <select name='user' {...register('user')} >
-      <option value="select" >Select</option>
-
-        <option name="employee"  onClick={() => setShowemployee(!showemployee)} >Employee</option>
-        <option name="student"  onClick={() => setShowstudent(!showstudent)} >Student</option>
-      </select>
-        
+      <InputLabel size='normal'>{errors.number?.message}</InputLabel>
+      <div>
+      <InputLabel size='normal'>Select User</InputLabel>
+      <Select 
+      sx={{
+        width: 150,
+        height: 40,
+      }} {...register('user')} >
+        <MenuItem  value={"Employee"}  onClick={() => setShowemployee(!showemployee)} >Employee</MenuItem>
+        <MenuItem value={"Student"}  onClick={() => setShowstudent(!showstudent)} >Student</MenuItem>
+      </Select>
+      </div>
       
       
       {showemployee && ( 
@@ -137,11 +157,11 @@ function User() {
       )}
       {showstudent && (
         <Showstudent />
-      )
-      }
-     <button onClick={() => test()} > Reset</button>
-      {edit ?(<button type='submit'>Update</button>):(
-      <button type='submit' > Submit</button>
+      )}
+      
+     <Button id="button" variant="contained" onClick={() => test() } > Reset</Button>
+      {edit ?(<Button type='submit' variant="contained">Update</Button>):(
+      <Button type='submit'variant="contained" > Submit</Button>
       )}
     </form>
     </FormProvider>

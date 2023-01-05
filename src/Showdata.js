@@ -2,22 +2,20 @@ import './App.css'
 import React, { useContext, useState,useEffect } from 'react';
 import User from './User';
 import { Globaldata } from './User';
+import Button from '@mui/material/Button';
+import Table from '@mui/material/Table';
 
 function Showdata() {
     
-  const { array,handleUpdate } = useContext(Globaldata);
+  const { array,handleUpdate,handleDelete} = useContext(Globaldata);
   useEffect(()=>{
      console.log(array,"showdata array")
   })
   
-  const handleDelete =()=>{
-    array.splice(index, 1);
-    setArray([...array]);
-  }
   
   return (
     <div>
-    <table>
+    <Table>
       <tr>
         <th>Name</th>
         <th>Email</th>
@@ -31,11 +29,11 @@ function Showdata() {
           <td>{item.email}</td>
           <td>{item.number}</td>
           <td>{item.user}</td>
-          <td><button onClick={() => handleUpdate(item.name)}>Update</button></td>
-          <td><button onClick={() => handleDelete(index)}>Delete</button></td>
+          <td><Button variant="contained" color="success" onClick={() => handleUpdate(item.name,array)}>Update</Button></td>
+          <td><Button variant="contained" color="warning" onClick={() => handleDelete(index,array)}>Delete</Button></td>
         </tr>
       ))}
-    </table>
+    </Table>
     
   </div>
   );

@@ -1,22 +1,24 @@
 
 import React from "react";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
 function Showstudent() {
   const { register } = useFormContext();
   return (
     <div className="Showstudent">
         <div>
-            <label>College Name</label>
-            <input type="text" name="collageName" {...register("collageName")}/>
+            <InputLabel size='normal'>College Name</InputLabel>
+            <Input type="text" name="collageName" {...register("collageName")}/>
             
           </div>
           <div>
-            <label>School name</label>
-            <input type="text" name="schoolName" {...register("schoolName")} />
+            <InputLabel size='normal'>School name</InputLabel>
+            <Input type="text" name="schoolName" {...register("schoolName")} />
          </div>
           <div>
-            <label>Hobbies</label>
-            <input type="text" name="hobbies" {...register("hobbies")} />
+            <InputLabel size='normal'>Hobbies</InputLabel>
+            <Input type="text" name="hobbies" {...register("hobbies")} />
             
           </div>
     </div>

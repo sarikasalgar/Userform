@@ -1,5 +1,7 @@
 
 import React from "react";
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 function Showemployee() {
@@ -8,13 +10,13 @@ function Showemployee() {
     <div className="Showemployee">
       
         <div>
-            <label>Current office name</label>
-            <input type="name" name="officename" {...register("officename")} />
+            <InputLabel size='normal'>Current office name</InputLabel>
+            <Input type="name" name="officename" {...register("officename")} />
             
         </div>
         <div>
-            <label>Previous experience</label>
-            <input type="number" name="experience" {...register("experience")}/>
+            <InputLabel size='normal'>Previous experience</InputLabel>
+            <Input type="number" name="experience" {...register("experience")}/>
             
           </div>
     </div>
