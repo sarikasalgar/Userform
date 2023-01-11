@@ -9,25 +9,41 @@ h1, p {
 }
 
 .App {
-  text-align: center;
-  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  float: left;
 }
 
-
+.sidenav{
+  background-color: grey;
+  width: 200px;
+  height: 500px;
+  padding-top: 30px;
+  display: flex;
+}
+.tablediv{
+  padding:10px;
+  width: 700px;
+}
+.formdiv{
+  padding:10px;
+  width: 350px;
+}
 
 form{
-  border:2px solid black;
-  margin: 30px;
-  width:500px;
-  background-color: skyblue;
-  padding-bottom: 30px;
+  border: 1px solid #dddddd;
+ 
+  /* background-color: skyblue; */
+  padding: 30px;
 }
 
-label,input,button{
+label,input,button,textfield,InputLabel{
   margin: 5px;
 }
 td, th {
   border: 1px solid #dddddd;
+  width:50px;
   text-align: left;
   padding: 8px;
 }
@@ -35,3 +51,14 @@ td, th {
   margin: 10px;
 
 }
+.header_icons{
+  display: flex;
+  
+  
+}
+.header_logo{
+  width: 70%;
+}
+.header{
+  display: flex;
+} 

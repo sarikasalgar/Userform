@@ -6,11 +6,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Showemployee from './Showemployee';
 import Showstudent from './Showstudent';
 import * as yup from "yup";
-
+import Header from './Header';
+import Sidenav from './Sidenav';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
-import {Select,MenuItem} from '@mui/material';
+import DehazeIcon from '@mui/icons-material/Dehaze';
+import {Select,MenuItem, TextField} from '@mui/material';
 
 //import Editform from './Editform';
 const Showdata = lazy(() => import('./Showdata'));
@@ -51,12 +53,13 @@ function User() {
   const inputdata = {
     name:" ",
       email:" ",
-      number: " "
+      number: " ",
+      user:" "
   };
-   const test=()=>{
+   const resetdata=()=>{
     console.log(inputdata)
     reset(inputdata);
-    
+    setEdit(false);
   }
 //   useEffect(()=>{
 //     let edit1=props.values[0];
@@ -117,57 +120,72 @@ function User() {
   
   return (
     <Globaldata.Provider value={contextValue}>
+
     <div className="App">
-    <FormProvider {...methods} > 
-    <form onSubmit={handleSubmit(onSubmit, onError)}> 
-      
-    
-      <h1>User Form</h1>
+      <div className='header'>
+        <Header />
+      </div>
       <div>
-        <InputLabel size='normal'>Name</InputLabel>
-        <Input name="name" {...register('name')} type="text"  />
+        <Sidenav />
+      </div>
+      <div className='table'>
+        <div><DehazeIcon/></div>
+        <Button variant="contained" color="success" onClick={() => resetdata()} >Add User</Button>
+        <Suspense fallback={<h1>Loading...</h1>}>
+            <Showdata />
+        </Suspense>
+      </div>
+      <div className='formdiv'>
+        <DehazeIcon/>
+        <FormProvider {...methods} > 
+        <form onSubmit={handleSubmit(onSubmit, onError)}> 
+          
         
-      </div>
-      <InputLabel size='normal'>{errors.name?.message}</InputLabel>
-      <div>
-        <InputLabel size='normal'>Email</InputLabel>
-        <Input type="email" color='primary' name="email" {...register('email')}  />
-      </div>
-      <InputLabel size='normal'>{errors.email?.message}</InputLabel>
-      <div>
-        <InputLabel size='normal'>Contact no</InputLabel>
-        <Input type="number" name="number" {...register('number')}  />
-      </div>
-      <InputLabel size='normal'>{errors.number?.message}</InputLabel>
-      <div>
-      <InputLabel size='normal'>Select User</InputLabel>
-      <Select 
-      sx={{
-        width: 150,
-        height: 40,
-      }} {...register('user')} >
-        <MenuItem  value={"Employee"}  onClick={() => setShowemployee(!showemployee)} >Employee</MenuItem>
-        <MenuItem value={"Student"}  onClick={() => setShowstudent(!showstudent)} >Student</MenuItem>
-      </Select>
+          <h1>User Form</h1>
+          <div>
+            {/* <InputLabel size='normal'>Name</InputLabel> */}
+            <TextField name="name" {...register('name')} type="text" label="Name" />
+            
+          </div>
+          
+          <div>
+            {/* <InputLabel size='normal'>Email</InputLabel> */}
+            <TextField type="email" color='primary' name="email" {...register('email')} label="Email" />
+          </div>
+          <InputLabel size='normal' error>{errors.email?.message}</InputLabel>
+          <div>
+            {/* <InputLabel size='normal'>Contact no</InputLabel> */}
+            <TextField type="number" name="number" {...register('number')} label="Contact no." />
+          </div>
+          <InputLabel size='normal' error>{errors.number?.message}</InputLabel>
+          <div>
+          <InputLabel size='normal'>Select User</InputLabel>
+          <Select 
+          sx={{
+            width: 150,
+            height: 40,
+          }} {...register('user')} type="text" name="user" >
+            <MenuItem  value={"Employee"}  onClick={() => setShowemployee(!showemployee)} >Employee</MenuItem>
+            <MenuItem value={"Student"}  onClick={() => setShowstudent(!showstudent)} >Student</MenuItem>
+          </Select>
+          </div>
+          
+          
+          {showemployee && ( 
+            <Showemployee />
+          )}
+          {showstudent && (
+            <Showstudent />
+          )}
+          
+        <Button id="button" variant="contained" onClick={() => resetdata() } > Reset</Button>
+          {edit ?(<Button type='submit' variant="contained">Update</Button>):(
+          <Button type='submit'variant="contained" > Submit</Button>
+          )}
+        </form>
+        </FormProvider>
       </div>
       
-      
-      {showemployee && ( 
-        <Showemployee />
-      )}
-      {showstudent && (
-        <Showstudent />
-      )}
-      
-     <Button id="button" variant="contained" onClick={() => test() } > Reset</Button>
-      {edit ?(<Button type='submit' variant="contained">Update</Button>):(
-      <Button type='submit'variant="contained" > Submit</Button>
-      )}
-    </form>
-    </FormProvider>
-    <Suspense fallback={<h1>Loading...</h1>}>
-        <Showdata />
-    </Suspense>
   </div>   
   </Globaldata.Provider>
   );

@@ -1,7 +1,4 @@
 import gql from '@apollo/client';
+import User from '../User';
 //import Showdata from '../Showdata';
 
-export const GET_USER_LIST = gql
-query {
-    
-}
