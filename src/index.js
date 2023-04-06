@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 //import Usertype from './Usertype';
 import User from './User';
+import Userform from './Userform';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

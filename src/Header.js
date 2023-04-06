@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import EmailIcon from '@mui/icons-material/Email';
 import HelpIcon from '@mui/icons-material/Help';
 import SearchIcon from '@mui/icons-material/Search';
-import InputLabel from '@mui/material/InputLabel';
+import {Input} from '@mui/material/';
 import {TextField} from "@material-ui/core";
 
 export default function Header() {
@@ -17,8 +17,8 @@ export default function Header() {
             </div>
             
             <div className="header_icon">
-                <SearchIcon align="right"/>
-                <TextField label="Open project" align="right"/>
+            <SearchIcon align="right"/><Input placeholder="search" align="right"></Input>
+                
                 <HelpIcon align="right"/>
                 <EmailIcon align="right" />
                 <AppsIcon align="right"/>
